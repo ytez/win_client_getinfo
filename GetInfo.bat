@@ -6,14 +6,15 @@ chdir %~dp0
 if not "%CD%\" == "%~dp0" (
   echo Please execute this BAT from "Local Drive" ^(e.g. Desktop^)
   pause
-  rem exit 1
+  exit 1
 )
     
 rem ############### VARIBLES ###############
 rem set OUTPUT_DIR=%USERPROFILE%\Desktop
-set OUTPUT_DIR=%~dp0\output
-set SUB_MODULES=%~dp0\modules
-set COMMAND_LIST=%~dp0\modules\COMMAND_LIST.tsv
+set BATDIR=%~dp0
+set OUTPUT_DIR=%BATDIR%output
+set SUB_MODULES=%BATDIR%modules
+set COMMAND_LIST=%BATDIR%modules\COMMAND_LIST.tsv
 
 set CURRENT_DATETIME=
 set WORKDIR=
@@ -33,7 +34,7 @@ exit %ERRORLEVEL%
 
 :make_output_dirfile
   set WORKDIR=%OUTPUT_DIR%\%COMPUTERNAME%_%CURRENT_DATETIME%
-  set OUTPUT_FILENAME=%WORKDIR%\%COMPUTERNAME%_%CURRENT_DATETIME%.txt
+  set OUTPUT_FILENAME=%WORKDIR%\00_%COMPUTERNAME%_%CURRENT_DATETIME%.txt
 
   mkdir "%WORKDIR%"
   if not %ERRORLEVEL% == 0 goto :ERROR
@@ -59,6 +60,7 @@ exit /b 0
 
 
 :exec_command_list
+  chdir %SUB_MODULES%
   for /f "eol=# tokens=1,2 delims=	" %%a in (%COMMAND_LIST%) do (
     echo. & echo # Executing "%%a" ...
     echo. & echo # Executing "%%a" ... >> "%OUTPUT_FILENAME%"
@@ -67,7 +69,8 @@ exit /b 0
 
     type "%WORKDIR%\%%b"
     type "%WORKDIR%\%%b" >> "%OUTPUT_FILENAME%"
-  )  
+  )
+  chdir %BATDIR%
 exit /b 0
 
 

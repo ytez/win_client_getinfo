@@ -1,10 +1,11 @@
 # command	output filename
-systeminfo	systeminfo.txt
-ipconfig /all	ipconfig_all.txt
-route print	route_print.txt
-# netsh wlan show all	netsh_wlan_show_all.txt
-netsh wlan show interfaces	netsh_wlan_show_interfaces.txt
-netsh wlan show networks	netsh_wlan_show_networks.txt
-netsh wlan show profiles	netsh_wlan_show_profiles.txt
-PowerShell.exe -ExecutionPolicy RemoteSigned .\modules\netsh_wlan_show_profiles_detail.ps1	netsh_wlan_show_profiles_detail.txt
-.\modules\ping.bat	ping.txt
+systeminfo.exe	01_systeminfo.txt
+.\runps1.bat .\get_netadapter.ps1	02_netadapters.csv
+ipconfig.exe /all	03_ipconfig_all.txt
+route.exe print	04_route_print.txt
+.\ping.bat	05_ping.txt
+# netsh.exe wlan show all	10_netsh_wlan_show_all.txt
+netsh.exe wlan show interfaces	11_netsh_wlan_show_interfaces.txt
+netsh.exe wlan show networks	12_netsh_wlan_show_networks.txt
+netsh.exe wlan show profiles	13_netsh_wlan_show_profiles.txt
+.\runps1.bat .\netsh_wlan_show_profiles_detail.ps1	14_netsh_wlan_show_profiles_detail.txt
